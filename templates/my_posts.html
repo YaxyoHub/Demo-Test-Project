@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css">
+<style>
+
+.button {
+    display: block;
+    height: 40px;
+    width: 160px;
+    background-color: aqua;
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+    text-align: center;
+    font-size: 25px;
+    border-radius: 50px;
+    margin: 20px;
+}
+
+/* Modal uchun stillar */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 320px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-box p {
+    font-size: 20px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-buttons button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-ok {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-ok:hover {
+    background-color: #c0392b;
+}
+
+.btn-cancel {
+    background-color: #ccc;
+    color: black;
+}
+
+.btn-cancel:hover {
+    background-color: #b3b3b3;
+}
+
+</style>
+</head>
+<body>
+
+        {% if messages %}
+
+    {% for i in messages %}
+
+    <p style="color: green;">{{ i }}</p>
+
+    {% endfor %}
+
+    {% endif %}
+
+    <div>
+        <a class="button" href="{% url 'create_post' %}">
+            <i class="fa-solid fa-plus"></i>
+            Create Post
+        </a>
+        <a class="button" href="{% url 'home' %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Ortga
+        </a>
+    </div>
+
+    <br><br><br>
+    
+    {% if not posts %}
+    <h1>
+        Siz hali Post yaratmagansiz
+    </h1>
+
+    {% else %}
+
+        {% for i in posts %}
+
+        <img height="300" width="300" src="{{ i.image.url }}" alt="Rasm">
+        <p>
+            {{ i.title }}
+        </p>
+        <p>
+            {{ i.owner.username }}
+        </p>
+        <p>
+            {{ i.created_at }}
+        </p>
+        
+        <a href="{% url 'edit_post' i.pk %}">
+            <i class="fa-solid fa-pencil"></i>
+        </a>
+        <a href="#" class="delete-btn" data-url="{% url 'delete_post' i.pk %}">
+            <i class="fa-solid fa-trash"></i>
+        </a>
+
+        <hr>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <!-- Tasdiqlash modali -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <p>Rostdan ham o'chirmoqchimisiz?</p>
+            <div class="modal-buttons">
+                <button class="btn-ok" id="confirmDeleteBtn">OK</button>
+                <button class="btn-cancel" id="cancelDeleteBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let deleteUrl = "";
+    const modal = document.getElementById("deleteModal");
+
+    document.querySelectorAll(".delete-btn").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            deleteUrl = this.getAttribute("data-url");
+            modal.classList.add("active");
+        });
+    });
+
+    document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+        if (deleteUrl) {
+            window.location.href = deleteUrl;
+        }
+    });
+
+    document.getElementById("cancelDeleteBtn").addEventListener("click", function () {
+        deleteUrl = "";
+        modal.classList.remove("active");
+    });
+
+    // Modal tashqarisiga bosilganda ham yopilsin
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+</script>
+
+</body>

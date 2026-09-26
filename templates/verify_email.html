@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email</title>
+</head>
+<body>
+
+    <h1>Verify Your Email</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="number" name="code" placeholder="Verify code">
+
+        <br><br>
+
+        <input type="submit" value="Confirm">
+    </form>
+
+    {% if messages %}
+
+    {% for i in messages %}
+
+    <p style="color: red;">{{ i }}</p>
+
+    {% endfor %}
+
+    {% endif %}
+
+</body>
+</html>

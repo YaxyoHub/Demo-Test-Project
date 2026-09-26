@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css">
+<style>
+
+.button {
+    display: block;
+    height: 40px;
+    width: 160px;
+    background-color: aqua;
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+    text-align: center;
+    font-size: 25px;
+    border-radius: 50px;
+    margin: 20px;
+}
+
+</style>
+</head>
+<body>
+
+    {% if messages %}
+
+    {% for i in messages %}
+
+    <p style="color: red;">{{ i }}</p>
+
+    {% endfor %}
+
+    {% endif %}
+
+    <div>
+        <a class="button" href="{% url 'home' %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Ortga
+        </a>
+    </div>
+
+    
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Title: </label>
+        {{ form.title }}
+
+        {% if form.errors %}
+        <p style="color: red;">{{ form.errors }}</p>
+        {% endif %}
+
+        <br><br>
+
+        <label>Image: </label>
+        {{ form.image }}
+        {% if form.errors %}
+        <p style="color: red;">{{ form.errors }}</p>
+        {% endif %}
+
+        <br><br>
+
+        <input type="submit" value="Edit">
+
+    </form>
+    
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Email</title>
+</head>
+<style>
+
+    input {
+        display: block;
+        margin: 20px;
+    }
+
+    textarea {
+        display: block;
+        margin: 20px;
+    }
+
+</style>
+<body>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="email" name="email" placeholder="Email kiriting">
+
+        <textarea name="message" placeholder="Xabar yozing" rows="4"></textarea>
+
+        <input type="submit" value="Yuborish">
+
+    </form>
+    
+</body>
+</html>

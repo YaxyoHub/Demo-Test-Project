@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Site</title>
+    <style>
+        label {
+            display: block;
+        }
+        input {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    {% if messages %}
+
+    {% for i in messages %}
+
+    <p style="color: red;">{{ i }}</p>
+
+    {% endfor %}
+
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="username"> Username kiriting: </label>
+        <input type="text" id="username" name="username">
+
+        <label for="password"> Parol kiriting: </label>
+        <input type="password" id="password" name="password">
+
+
+        <a href="{% url 'register' %}">Hisobingiz yo'qmi, ro'yxatdan o'ting</a>
+
+        <br><br>
+        
+        <input type="submit" value="Log in">
+
+    </form>
+
+</body>
+</html>

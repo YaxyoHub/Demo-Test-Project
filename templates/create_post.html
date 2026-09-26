@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css">
+
+    <style>
+        .button {
+            display: block;
+            height: 40px;
+            width: 160px;
+            background-color: aqua;
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            text-align: center;
+            font-size: 25px;
+            border-radius: 50px;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 20px 50px;
+        }
+
+        input {
+            display: block;
+            margin: 20px 50px;
+        }
+
+        /* Modal fon */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal box */
+        .modal-box {
+            background-color: white;
+            width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-box h2 {
+            margin-top: 0;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .confirm-btn {
+            background-color: green;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if messages %}
+        {% for i in messages %}
+            <p style="color: red;">{{ i }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div>
+        <a class="button" href="{% url 'home' %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Ortga
+        </a>
+    </div>
+
+
+    <form method="POST" enctype="multipart/form-data" id="postForm">
+        {% csrf_token %}
+
+        <label>
+            Post Nomi *
+        </label>
+
+        {{ form.title }}
+
+        {% if form.title.errors %}
+            <p style="color:red;">{{ form.title.errors }}</p>
+        {% endif %}
+
+
+        <label>
+            Rasm *
+        </label>
+
+        {{ form.image }}
+
+        {% if form.image.errors %}
+            <p style="color:red;">{{ form.image.errors }}</p>
+        {% endif %}
+
+        <!-- Oddiy submit emas -->
+        <input type="button" value="Create" id="createBtn">
+
+    </form>
+
+
+    <!-- CONFIRMATION MODAL -->
+    <div class="modal" id="confirmModal">
+
+        <div class="modal-box">
+
+            <h2>Post yaratilsinmi?</h2>
+
+            <p>
+                Ushbu postni yaratishni tasdiqlaysizmi?
+            </p>
+
+            <div class="modal-buttons">
+
+                <button class="cancel-btn" id="cancelBtn">
+                    Bekor qilish
+                </button>
+
+                <button class="confirm-btn" id="confirmBtn">
+                    Ha, yaratish
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const createBtn = document.getElementById("createBtn");
+        const confirmModal = document.getElementById("confirmModal");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const confirmBtn = document.getElementById("confirmBtn");
+        const postForm = document.getElementById("postForm");
+
+
+        // Create bosilganda modal ochiladi
+        createBtn.addEventListener("click", function () {
+
+            confirmModal.style.display = "flex";
+
+        });
+
+
+        // Bekor qilish
+        cancelBtn.addEventListener("click", function () {
+
+            confirmModal.style.display = "none";
+
+        });
+
+
+        // Tasdiqlash
+        confirmBtn.addEventListener("click", function () {
+
+            postForm.submit();
+
+        });
+
+
+        // Modal tashqarisini bosganda yopish
+        confirmModal.addEventListener("click", function (event) {
+
+            if (event.target === confirmModal) {
+                confirmModal.style.display = "none";
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
